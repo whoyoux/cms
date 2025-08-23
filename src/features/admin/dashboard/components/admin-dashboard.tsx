@@ -18,7 +18,7 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
             <TransitionButton
                 action={async () => {
                     await signOut();
-                    router.replace("/admin/sign-in");
+                    router.push("/admin/sign-in");
                 }}
             >
                 Sign out

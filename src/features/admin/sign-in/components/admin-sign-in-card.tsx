@@ -87,7 +87,7 @@ export default function SignIn() {
                                 },
                                 {
                                     onSuccess: () => {
-                                        router.replace("/admin/dashboard");
+                                        router.push("/admin/dashboard");
                                     },
                                 },
                             );

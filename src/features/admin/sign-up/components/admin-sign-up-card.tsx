@@ -160,7 +160,7 @@ export default function SignUp() {
                                         toast.error(ctx.error.message);
                                     },
                                     onSuccess: async () => {
-                                        router.replace("/admin/dashboard");
+                                        router.push("/admin/dashboard");
                                     },
                                 },
                             });

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import AdminDashboard from "@/features/admin/dashboard/components/admin-dashboard";
-import { cachedGetSession } from "@/lib/auth";
+import { cachedGetSession } from "@/lib/get-session";
 
 const AdminDashboardPage = async () => {
     const { isLoggedIn, session } = await cachedGetSession();
