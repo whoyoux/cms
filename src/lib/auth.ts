@@ -2,8 +2,6 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { APIError, createAuthMiddleware } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
-import { headers } from "next/headers";
-import { cache } from "react";
 import prisma from "./prisma";
 
 export const auth = betterAuth({
