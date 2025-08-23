@@ -13,8 +13,8 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
     const router = useRouter();
 
     return (
-        <>
-            <pre>{JSON.stringify(session, null, 2)}</pre>
+        <div className="w-full p-4 flex flex-col gap-4">
+            <pre>{JSON.stringify(session.session, null, 2)}</pre>
             <TransitionButton
                 action={async () => {
                     await signOut();
@@ -23,7 +23,7 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
             >
                 Sign out
             </TransitionButton>
-        </>
+        </div>
     );
 };
 
