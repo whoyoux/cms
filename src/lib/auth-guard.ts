@@ -7,7 +7,9 @@ import { getCachedSession } from "./get-session";
 export const authGuard = async () => {
     const data = await getCachedSession();
 
-    if (!data.session || !data.isLoggedIn)
-        return redirect(ROUTES.ADMIN.SIGN_IN);
+    if (!data.session || !data.isLoggedIn) {
+        redirect(ROUTES.ADMIN.SIGN_IN);
+    }
+
     return data;
 };

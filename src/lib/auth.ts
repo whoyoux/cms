@@ -18,20 +18,27 @@ export const auth = betterAuth({
             console.log("TODO");
             // Send an email to the user with a link to reset their password
         },
+        autoSignIn: true,
+        revokeSessionsOnPasswordReset: true,
     },
     hooks: {
         before: createAuthMiddleware(async (ctx) => {
-            if (ONLY_ONE_ACCOUNT_CAN_BE_REGISTERED) {
-                if (ctx.path !== "/sign-up/email") {
-                    return;
+            if (
+                ONLY_ONE_ACCOUNT_CAN_BE_REGISTERED &&
+                ctx.path === "/sign-up/email"
+            ) {
+                try {
+                    const usersCount = await getRegisteredUsersCount();
+                    const doAdminExist = usersCount >= 1;
+                    if (doAdminExist) {
+                        throw new APIError("BAD_REQUEST", {
+                            message: "Admin account already exists.",
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error checking admin existence:", error);
+                    throw error;
                 }
-                const usersCount = await getRegisteredUsersCount();
-                const doAdminExist = usersCount >= 1;
-                if (doAdminExist)
-                    throw new APIError("BAD_REQUEST", {
-                        message: "Admin account already exists.",
-                    });
-                else return;
             }
         }),
     },

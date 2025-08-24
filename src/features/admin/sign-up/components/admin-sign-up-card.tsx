@@ -8,6 +8,7 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { revalidateRegisteredUsers } from "@/actions/revalidate";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -102,6 +103,8 @@ export default function SignUp() {
                     },
                     onSuccess: async () => {
                         router.push(ROUTES.ADMIN.DASHBOARD);
+
+                        await revalidateRegisteredUsers();
                     },
                 },
             });
