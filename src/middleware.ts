@@ -1,20 +1,17 @@
-import { getSessionCookie } from "better-auth/cookies";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { COOKIE_PREFIX } from "./constants/app";
 import { ADMIN_ROUTE_PREFIX, ROUTES } from "./constants/routes";
+import { getSession } from "./lib/get-session";
 
 export async function middleware(request: NextRequest) {
-    const sessionCookie = getSessionCookie(request, {
-        cookiePrefix: COOKIE_PREFIX,
-    });
+    const session = await getSession();
 
     if (request.nextUrl.pathname.startsWith(ADMIN_ROUTE_PREFIX)) {
         if (
             request.nextUrl.pathname === ROUTES.ADMIN.SIGN_IN ||
             request.nextUrl.pathname === ROUTES.ADMIN.SIGN_UP
         ) {
-            if (sessionCookie) {
+            if (session) {
                 const dashboardUrl = new URL(
                     ROUTES.ADMIN.DASHBOARD,
                     request.url,
@@ -26,7 +23,7 @@ export async function middleware(request: NextRequest) {
             return NextResponse.next();
         }
 
-        if (!sessionCookie) {
+        if (session) {
             const signInUrl = new URL(ROUTES.ADMIN.SIGN_IN, request.url);
 
             return NextResponse.redirect(signInUrl);
@@ -37,5 +34,9 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/((?!api|_next/static|_next/image|favicon.ico|public).*)"],
+    runtime: "nodejs",
+    matcher: [
+        "/admin",
+        "/((?!api|_next/static|_next/image|favicon.ico|public).*)",
+    ],
 };
