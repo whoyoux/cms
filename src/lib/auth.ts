@@ -5,8 +5,11 @@ import { nextCookies } from "better-auth/next-js";
 import { getRegisteredUsersCount } from "@/data-access/users";
 import prisma from "./prisma";
 
+export const APP_NAME = "CMS";
+export const COOKIE_PREFIX = "whx_cms";
+
 export const auth = betterAuth({
-    appName: "CMS",
+    appName: APP_NAME,
     database: prismaAdapter(prisma, {
         provider: "postgresql",
     }),
@@ -34,7 +37,7 @@ export const auth = betterAuth({
         }),
     },
     advanced: {
-        cookiePrefix: "whx_cms",
+        cookiePrefix: COOKIE_PREFIX,
     },
     plugins: [nextCookies()],
 });
