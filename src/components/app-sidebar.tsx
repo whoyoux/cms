@@ -1,11 +1,4 @@
-import {
-    Calendar,
-    GalleryVerticalEnd,
-    Home,
-    Inbox,
-    Search,
-    Settings,
-} from "lucide-react";
+import { Files, GalleryVerticalEnd, Home } from "lucide-react";
 import Link from "next/link";
 import {
     Sidebar,
@@ -30,14 +23,9 @@ const items = [
         icon: Home,
     },
     {
-        title: "Sign in",
-        url: ROUTES.ADMIN.SIGN_IN,
-        icon: Inbox,
-    },
-    {
-        title: "Sign up",
-        url: ROUTES.ADMIN.SIGN_UP,
-        icon: Calendar,
+        title: "Media Files",
+        url: ROUTES.ADMIN.MEDIA_FILES,
+        icon: Files,
     },
 ];
 

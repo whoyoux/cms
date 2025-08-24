@@ -1,10 +1,8 @@
 import Image from "next/image";
 import {
     Card,
-    CardAction,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
@@ -26,7 +24,7 @@ const Info = ({ label, value }: { label: string; value: string }) => {
 
 const AdminDashboard = ({ session }: AdminDashboardProps) => {
     return (
-        <div className="w-full p-4 flex flex-col gap-4">
+        <div className="w-full flex flex-col gap-4">
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 <Card>
                     <CardHeader>
