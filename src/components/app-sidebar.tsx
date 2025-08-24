@@ -1,15 +1,26 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import {
+    Calendar,
+    GalleryVerticalEnd,
+    Home,
+    Inbox,
+    Search,
+    Settings,
+} from "lucide-react";
 import Link from "next/link";
 import {
     Sidebar,
     SidebarContent,
+    SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
+    SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { authGuard } from "@/lib/auth-guard";
+import { UserSidebar } from "./user-sidebar";
 
 const items = [
     {
@@ -29,9 +40,27 @@ const items = [
     },
 ];
 
-export function AppSidebar() {
+export async function AppSidebar() {
+    const { session } = await authGuard();
+
     return (
         <Sidebar>
+            <SidebarHeader>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton size="lg" asChild>
+                            <div>
+                                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                                    <GalleryVerticalEnd className="size-4" />
+                                </div>
+                                <div className="flex flex-col gap-0.5 leading-none">
+                                    <span className="font-medium">CMS</span>
+                                </div>
+                            </div>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupLabel>Application</SidebarGroupLabel>
@@ -51,6 +80,15 @@ export function AppSidebar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
+            <SidebarFooter>
+                <UserSidebar
+                    user={{
+                        email: session?.user.email || "",
+                        name: session?.user.name || "",
+                        avatar: session?.user.image || "",
+                    }}
+                />
+            </SidebarFooter>
         </Sidebar>
     );
 }

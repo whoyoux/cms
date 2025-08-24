@@ -15,4 +15,4 @@ export const getSession = async () => {
     };
 };
 
-export const cachedGetSession = cache(getSession);
+export const getCachedSession = cache(getSession);

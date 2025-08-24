@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { APIError, createAuthMiddleware } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
+import { getRegisteredUsersCount } from "@/data-access/users";
 import prisma from "./prisma";
 
 export const auth = betterAuth({
@@ -21,10 +22,8 @@ export const auth = betterAuth({
                 return;
             }
 
-            const usersCount = await prisma.user.count();
+            const usersCount = await getRegisteredUsersCount();
             const doAdminExist = usersCount >= 1;
-
-            console.log(usersCount, doAdminExist);
 
             if (doAdminExist)
                 throw new APIError("BAD_REQUEST", {

@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { getRegisteredUsersCount } from "@/data-access/users";
 import SignUp from "@/features/admin/sign-up/components/admin-sign-up-card";
 
 export const metadata: Metadata = {
     title: "Sign up",
 };
 
-const AdminSignUpPage = () => {
+const AdminSignUpPage = async () => {
+    const registeredUsers = await getRegisteredUsersCount();
+    if (registeredUsers >= 1) return redirect("/admin/sign-in");
+
     return (
         <div className="w-full pt-4 md:pt-12">
             <SignUp />
