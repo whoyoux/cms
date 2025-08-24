@@ -3,6 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { APIError, createAuthMiddleware } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { APP_NAME, COOKIE_PREFIX } from "@/constants/app";
+import { ONLY_ONE_ACCOUNT_CAN_BE_REGISTERED } from "@/constants/feature-flags";
 import { getRegisteredUsersCount } from "@/data-access/users";
 import prisma from "./prisma";
 
@@ -20,18 +21,18 @@ export const auth = betterAuth({
     },
     hooks: {
         before: createAuthMiddleware(async (ctx) => {
-            if (ctx.path !== "/sign-up/email") {
-                return;
+            if (ONLY_ONE_ACCOUNT_CAN_BE_REGISTERED) {
+                if (ctx.path !== "/sign-up/email") {
+                    return;
+                }
+                const usersCount = await getRegisteredUsersCount();
+                const doAdminExist = usersCount >= 1;
+                if (doAdminExist)
+                    throw new APIError("BAD_REQUEST", {
+                        message: "Admin account already exists.",
+                    });
+                else return;
             }
-
-            const usersCount = await getRegisteredUsersCount();
-            const doAdminExist = usersCount >= 1;
-
-            if (doAdminExist)
-                throw new APIError("BAD_REQUEST", {
-                    message: "Admin account already exists.",
-                });
-            else return;
         }),
     },
     advanced: {

@@ -1,0 +1,1 @@
+export const ONLY_ONE_ACCOUNT_CAN_BE_REGISTERED = true;

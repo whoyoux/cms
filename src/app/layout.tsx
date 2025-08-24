@@ -9,7 +9,6 @@ const interSans = Inter({
     subsets: ["latin"],
 });
 
-// Wspólne dane metadanych
 const commonMetadata = {
     title: APP_NAME,
     description:
