@@ -1,6 +1,10 @@
-import prisma from "@/lib/prisma";
 import "server-only";
 
+import prisma from "@/lib/prisma";
+
 export const getRegisteredUsersCount = async () => {
-    return await prisma.user.count();
+    "use cache";
+
+    const count = await prisma.user.count();
+    return count;
 };

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const AdminSignUpPage = async () => {
     if (ONLY_ONE_ACCOUNT_CAN_BE_REGISTERED) {
         const registeredUsers = await getRegisteredUsersCount();
-        if (registeredUsers >= 1) return redirect(ROUTES.ADMIN.SIGN_IN);
+        if (registeredUsers >= 1) redirect(ROUTES.ADMIN.SIGN_IN);
     }
 
     return (
