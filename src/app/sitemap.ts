@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
-import { getBaseAppUrl } from "@/lib/utils";
+import { APP_BASE_URL } from "@/constants/app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
     return [
         {
-            url: getBaseAppUrl(),
+            url: APP_BASE_URL,
             lastModified: new Date(),
             changeFrequency: "weekly",
             priority: 1,

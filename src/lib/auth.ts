@@ -2,11 +2,9 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { APIError, createAuthMiddleware } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
+import { APP_NAME, COOKIE_PREFIX } from "@/constants/app";
 import { getRegisteredUsersCount } from "@/data-access/users";
 import prisma from "./prisma";
-
-export const APP_NAME = "CMS";
-export const COOKIE_PREFIX = "whx_cms";
 
 export const auth = betterAuth({
     appName: APP_NAME,

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getBaseAppUrl } from "@/lib/utils";
+import { APP_BASE_URL } from "@/constants/app";
 
 export default function robots(): MetadataRoute.Robots {
     return {
@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: "/",
             disallow: "/admin/",
         },
-        sitemap: `${getBaseAppUrl()}/sitemap.xml`,
+        sitemap: `${APP_BASE_URL}/sitemap.xml`,
     };
 }

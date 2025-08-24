@@ -40,8 +40,7 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
                                     <Image
                                         src={session?.user?.image || ""}
                                         alt="Profile preview"
-                                        layout="fill"
-                                        objectFit="cover"
+                                        fill
                                     />
                                 </div>
                             ) : null}

@@ -228,8 +228,7 @@ export default function SignUp() {
                                                     <Image
                                                         src={field.value}
                                                         alt="Profile preview"
-                                                        layout="fill"
-                                                        objectFit="cover"
+                                                        fill
                                                     />
                                                 </div>
                                             )}
