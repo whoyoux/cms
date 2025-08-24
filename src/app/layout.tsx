@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { APP_BASE_URL } from "@/constants/app";
 
 const interSans = Inter({
     variable: "--font-inter-sans",
@@ -9,6 +10,7 @@ const interSans = Inter({
 });
 
 export const metadata: Metadata = {
+    metadataBase: new URL(APP_BASE_URL),
     title: {
         default: "CMS",
         template: "%s - CMS",
