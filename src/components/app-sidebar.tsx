@@ -19,23 +19,24 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { ROUTES } from "@/constants/routes";
 import { authGuard } from "@/lib/auth-guard";
 import { UserSidebar } from "./user-sidebar";
 
 const items = [
     {
         title: "Home",
-        url: "/admin/dashboard",
+        url: ROUTES.ADMIN.DASHBOARD,
         icon: Home,
     },
     {
         title: "Sign in",
-        url: "/admin/sign-in",
+        url: ROUTES.ADMIN.SIGN_IN,
         icon: Inbox,
     },
     {
         title: "Sign up",
-        url: "/admin/sign-up",
+        url: ROUTES.ADMIN.SIGN_UP,
         icon: Calendar,
     },
 ];

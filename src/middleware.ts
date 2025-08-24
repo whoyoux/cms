@@ -1,17 +1,21 @@
 import { getSessionCookie } from "better-auth/cookies";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { ADMIN_ROUTE_PREFIX, ROUTES } from "./constants/routes";
 
 export async function middleware(request: NextRequest) {
     const sessionCookie = getSessionCookie(request);
 
-    if (request.nextUrl.pathname.startsWith("/admin")) {
+    if (request.nextUrl.pathname.startsWith(ADMIN_ROUTE_PREFIX)) {
         if (
-            request.nextUrl.pathname === "/admin/sign-in" ||
-            request.nextUrl.pathname === "/admin/sign-up"
+            request.nextUrl.pathname === ROUTES.ADMIN.SIGN_IN ||
+            request.nextUrl.pathname === ROUTES.ADMIN.SIGN_UP
         ) {
             if (sessionCookie) {
-                const dashboardUrl = new URL("/admin/dashboard", request.url);
+                const dashboardUrl = new URL(
+                    ROUTES.ADMIN.DASHBOARD,
+                    request.url,
+                );
 
                 return NextResponse.redirect(dashboardUrl);
             }
@@ -20,7 +24,7 @@ export async function middleware(request: NextRequest) {
         }
 
         if (!sessionCookie) {
-            const signInUrl = new URL("/admin/sign-in", request.url);
+            const signInUrl = new URL(ROUTES.ADMIN.SIGN_IN, request.url);
 
             return NextResponse.redirect(signInUrl);
         }

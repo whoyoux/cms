@@ -14,6 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TransitionButton } from "@/components/ui/transition-button";
+import { ROUTES } from "@/constants/routes";
 import { signIn } from "@/lib/auth-client";
 
 export default function SignIn() {
@@ -87,7 +88,7 @@ export default function SignIn() {
                                 },
                                 {
                                     onSuccess: () => {
-                                        router.push("/admin/dashboard");
+                                        router.push(ROUTES.ADMIN.DASHBOARD);
                                     },
                                 },
                             );
