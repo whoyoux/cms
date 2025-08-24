@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import type { PropsWithChildren } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -17,7 +16,7 @@ const AdminLayout = ({ children }: PropsWithChildren) => {
             <SidebarProvider>
                 <AppSidebar />
                 <main className="w-full">
-                    <div className="w-full p-2 border-b bg-background">
+                    <div className="w-full p-2 border-b bg-background sticky top-0 z-50">
                         <SidebarTrigger />
                     </div>
 

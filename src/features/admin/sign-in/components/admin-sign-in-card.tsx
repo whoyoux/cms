@@ -1,8 +1,13 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import type { z } from "zod";
+import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
@@ -11,18 +16,53 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { TransitionButton } from "@/components/ui/transition-button";
 import { ROUTES } from "@/constants/routes";
 import { signIn } from "@/lib/auth-client";
+import { SignInSchema } from "@/schemas/auth-schemas";
 
 export default function SignIn() {
     const router = useRouter();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [rememberMe, setRememberMe] = useState(false);
+    const form = useForm<z.infer<typeof SignInSchema>>({
+        resolver: zodResolver(SignInSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+            rememberMe: false,
+        },
+    });
+
+    const [isPending, startTransition] = useTransition();
+
+    async function onSubmit(values: z.infer<typeof SignInSchema>) {
+        startTransition(async () => {
+            await signIn.email(
+                {
+                    email: values.email,
+                    password: values.password,
+                    rememberMe: values.rememberMe,
+                },
+                {
+                    onSuccess: () => {
+                        router.push(ROUTES.ADMIN.DASHBOARD);
+                    },
+                    onError: (err) => {
+                        toast.error(err.error.message);
+                    },
+                },
+            );
+        });
+    }
 
     return (
         <Card className="max-w-md mx-auto">
@@ -33,70 +73,74 @@ export default function SignIn() {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="grid gap-4">
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            placeholder="m@example.com"
-                            required
-                            onChange={(e) => {
-                                setEmail(e.target.value);
-                            }}
-                            value={email}
-                        />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <div className="flex items-center">
-                            <Label htmlFor="password">Password</Label>
-                            <Link
-                                href="#"
-                                className="ml-auto inline-block text-sm underline"
-                            >
-                                Forgot your password?
-                            </Link>
-                        </div>
-
-                        <Input
-                            id="password"
-                            type="password"
-                            placeholder="password"
-                            autoComplete="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <Checkbox
-                            id="remember"
-                            onClick={() => {
-                                setRememberMe(!rememberMe);
-                            }}
-                        />
-                        <Label htmlFor="remember">Remember me</Label>
-                    </div>
-
-                    <TransitionButton
-                        action={async () => {
-                            await signIn.email(
-                                {
-                                    email,
-                                    password,
-                                },
-                                {
-                                    onSuccess: () => {
-                                        router.push(ROUTES.ADMIN.DASHBOARD);
-                                    },
-                                },
-                            );
-                        }}
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="grid gap-4"
                     >
-                        Login
-                    </TransitionButton>
-                </div>
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="m@example.com"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Password</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Password"
+                                            type="password"
+                                            autoComplete="password"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                    <FormDescription className="flex flex-row-reverse">
+                                        <Link
+                                            href="#"
+                                            className="text-sm underline"
+                                        >
+                                            Forgot your password?
+                                        </Link>
+                                    </FormDescription>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="rememberMe"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-row-reverse justify-end gap-2">
+                                    <FormLabel>Remember me</FormLabel>
+                                    <FormControl>
+                                        <Checkbox
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <Button type="submit" loading={isPending}>
+                            Login
+                        </Button>
+                    </form>
+                </Form>
             </CardContent>
         </Card>
     );

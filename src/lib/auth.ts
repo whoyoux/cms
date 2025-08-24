@@ -6,6 +6,7 @@ import { getRegisteredUsersCount } from "@/data-access/users";
 import prisma from "./prisma";
 
 export const auth = betterAuth({
+    appName: "CMS",
     database: prismaAdapter(prisma, {
         provider: "postgresql",
     }),
@@ -31,6 +32,9 @@ export const auth = betterAuth({
                 });
             else return;
         }),
+    },
+    advanced: {
+        cookiePrefix: "whx_cms",
     },
     plugins: [nextCookies()],
 });
